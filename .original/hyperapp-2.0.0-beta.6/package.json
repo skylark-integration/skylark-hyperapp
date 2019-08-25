@@ -1,0 +1,35 @@
+{
+  "name": "hyperapp",
+  "description": "JavaScript micro-framework for building web interfaces.",
+  "version": "2.0.0-beta.6",
+  "main": "dist/hyperapp.js",
+  "module": "src/index.js",
+  "license": "MIT",
+  "repository": "jorgebucaran/hyperapp",
+  "homepage": "https://github.com/jorgebucaran/hyperapp",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "author": "Jorge Bucaran",
+  "keywords": [
+    "hyperapp",
+    "frontend",
+    "framework",
+    "virtual dom",
+    "vdom"
+  ],
+  "scripts": {
+    "tag": "node -p \"s=require('./${pkg:+pkg/$pkg/}package'),s.name+'@'+s.version\"",
+    "test": "exit 0",
+    "build": "export dir=${pkg:+pkg/$pkg/} pkg=$npm_package_name$pkg; npm run bundle && npm run minify",
+    "bundle": "rollup -i ${dir}$npm_package_module -o ${dir}dist/$pkg.js --no-esModule -m -f iife -n $pkg",
+    "minify": "terser ${dir}dist/$pkg.js -o ${dir}dist/$pkg.js -mc --source-map includeSources,url=$pkg.js.map",
+    "prepare": "npm run build",
+    "release": "msg=$(npm run -s tag); git commit -am $msg && git tag -s $msg -m $msg && git push && git push --tags && npm publish ${pkg:+@hyperapp/$pkg}"
+  },
+  "devDependencies": {
+    "rollup": "*",
+    "terser": "^3.17.0"
+  }
+}
